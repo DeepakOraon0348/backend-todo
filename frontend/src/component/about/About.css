@@ -1,0 +1,11 @@
+.about{
+    width: 100%;
+    height: 100vh;
+}
+.about h1{
+    border-bottom: 2px solid rgb(246, 121, 121);
+}
+.about p{
+    justify-content: center;
+    align-content: center;
+}
