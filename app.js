@@ -20,7 +20,7 @@ const corsConfig = {
     Credential:true,
     METHODS:["GET","POST","PUT","DELETE"],
 }
-app.use(cors())
+app.use(cors(corsConfig))
 app.use(express.json());
 
 
