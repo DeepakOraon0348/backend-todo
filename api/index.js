@@ -1,7 +1,9 @@
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import serverless from "serverless-http";
 dotenv.config();
 import auth from "../routs/auth.js";
 import list from "../routs/list.js";
@@ -28,7 +30,9 @@ async function connectDB() {
 app.use("/api/v1", auth);
 app.use("/api/v2", list);
 
-export default async function handler(req, res) {
+const handler = serverless(app);
+
+export default async function(req, res) {
     await connectDB();
-    app(req, res);
+    return handler(req, res);
 }
