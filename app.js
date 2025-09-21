@@ -7,13 +7,20 @@ import auth from "./routs/auth.js";
 import list from "./routs/list.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { METHODS } from "http";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const port=3000;
 const app=express();
-app.use(cors())
+
+const corsConfig = {
+    orgini:"*",
+    Credential:true,
+    METHODS:["GET","POST","PUT","DELETE"],
+}
+app.use(cors(corsConfig))
 app.use(express.json());
 
 
