@@ -22,8 +22,10 @@ let isConnected = false;
 
 async function connectDB() {
     if (!isConnected) {
+        console.log('Connecting to MongoDB...');
         await mongoose.connect(process.env.MONGO_URI);
         isConnected = true;
+        console.log('MongoDB connected!');
     }
 }
 
@@ -39,6 +41,8 @@ app.get("/api/test", (req, res) => {
 const handler = serverless(app);
 
 export default async function(req, res) {
+    console.log('API handler invoked');
     await connectDB();
+    console.log('DB connection done, handling request...');
     return handler(req, res);
 }
