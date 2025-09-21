@@ -36,9 +36,7 @@ app.use("/api/v1", auth);
 app.use("/api/v2", list);
 
 
-// app.get('/',(req,res)=>{
-//     res.send(`Hellow sir how are you`);
-// })
+ 
 
 // app.get("*", (req, res)=>{
 //     app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
