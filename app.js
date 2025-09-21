@@ -20,7 +20,7 @@ const corsConfig = {
     Credential:true,
     METHODS:["GET","POST","PUT","DELETE"],
 }
-app.use(cors(corsConfig))
+app.use(cors())
 app.use(express.json());
 
 
@@ -35,16 +35,16 @@ mongoose.connect(process.env.MONGO_URI)
 //     res.send(`Hellow sir how are you`);
 // })
 
-app.use(express.static(path.join(__dirname, "frontend", "dist")));
+// app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
-);
+// app.get("*", (req, res) =>
+//   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
+// );
 
-// app.get("/", (req, res)=>{
-//     app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
-//     res.sendFile(path.resolve(__dirname, "frontend","dist","index.html"));
-// });
+app.get("*", (req, res)=>{
+    app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
+    res.sendFile(path.resolve(__dirname, "frontend","dist","index.html"));
+});
  
 app.use("/api/v1", auth);
 app.use("/api/v2", list);
