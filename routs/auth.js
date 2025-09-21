@@ -26,6 +26,11 @@ Router.post("/register", async(req,res)=>{
     }
 });
 
+// GET route for testing
+Router.get("/register", (req, res) => {
+    res.send("API is working! Use POST for registration.");
+});
+
 //sign in
 
 Router.post("/signin", async(req,res)=>{
