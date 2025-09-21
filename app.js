@@ -38,4 +38,12 @@ app.use("/api/v2", list);
 
 // Remove static file serving for Vercel
 
-// For Vercel, the server is handled by the API handler in api/index.js
+
+// For local development
+app.get("/api/test", (req, res) => {
+    res.send("API is working!");
+});
+
+app.listen(port, () => {
+    console.log(`server is running on ${port}`);
+});

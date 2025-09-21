@@ -27,8 +27,14 @@ async function connectDB() {
     }
 }
 
+
 app.use("/api/v1", auth);
 app.use("/api/v2", list);
+
+// Test route for deployment verification
+app.get("/api/test", (req, res) => {
+    res.send("API is working!");
+});
 
 const handler = serverless(app);
 
