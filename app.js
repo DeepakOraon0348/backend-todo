@@ -24,14 +24,14 @@ mongoose.connect(process.env.MONGO_URI)
     console.log(err);
     
 })
-// app.get('/',(req,res)=>{
-//     res.send(`Hellow sir how are you`);
-// })
+app.get('/',(req,res)=>{
+    res.send(`Hellow sir how are you`);
+})
 
-app.get("/", (req, res)=>{
-    app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
-    res.sendFile(path.resolve(__dirname, "frontend","dist","index.html"));
-});
+// app.get("/", (req, res)=>{
+//     app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
+//     res.sendFile(path.resolve(__dirname, "frontend","dist","index.html"));
+// });
  
 app.use("/api/v1", auth);
 app.use("/api/v2", list);
