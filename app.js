@@ -15,12 +15,13 @@ const __dirname = path.dirname(__filename);
 const port = process.env.PORT || 3000;
 const app=express();
 
+
 const corsConfig = {
-    origni:"*",
-    Credential:true,
-    methods:["GET","POST","PUT","DELETE"],
-}
-app.use(cors(corsConfig))
+    origin: "*",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+};
+app.use(cors(corsConfig));
 app.use(express.json());
 
 
@@ -35,20 +36,6 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/api/v1", auth);
 app.use("/api/v2", list);
 
+// Remove static file serving for Vercel
 
- 
-
-// app.get("*", (req, res)=>{
-//     app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
-//     res.sendFile(path.resolve(__dirname, "frontend","dist","index.html"));
-// });
-
-
-app.use(express.static(path.join(__dirname, "frontend", "build")));
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"))
-);
-
-app.listen(port,()=>{
-    console.log(`server is runing on ${port}`);
-})
+// For Vercel, the server is handled by the API handler in api/index.js
