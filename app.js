@@ -16,9 +16,9 @@ const port = process.env.PORT || 3000;
 const app=express();
 
 const corsConfig = {
-    orgini:"*",
+    origni:"*",
     Credential:true,
-    METHODS:["GET","POST","PUT","DELETE"],
+    methods:["GET","POST","PUT","DELETE"],
 }
 app.use(cors(corsConfig))
 app.use(express.json());
