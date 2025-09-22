@@ -51,7 +51,7 @@ async function connectToMongoDB()  {
 //add middleware to check connection
 app.use((req, res, next)=>{
     if(!isConnected){
-        connectToMongoDB
+        connectToMongoDB();
     }
     next();
 })
