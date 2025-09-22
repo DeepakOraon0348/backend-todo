@@ -56,14 +56,17 @@ app.use((req, res, next)=>{
     next();
 })
 
+
+app.get("/", (req, res)=>{
+    res.send("API is working!");
+})
+
 app.use("/api/v1", auth);
 app.use("/api/v2", list);
 
 // Remove static file serving for Vercel
 
-app.get("/", (req, res)=>{
-    res.send("API is working!");
-})
+
 // For local development
 // app.get("/api/test", (req, res) => {
 //     res.send("API is working!");
