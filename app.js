@@ -25,12 +25,35 @@ app.use(cors(corsConfig));
 app.use(express.json());
 
 
-mongoose.connect(process.env.MONGO_URI)
-.then(()=>{
-    console.log(`mongodb connected`);
-}).catch((err)=>{
-    console.log(err);
+// mongoose.connect(process.env.MONGO_URI)
+// .then(()=>{
+//     console.log(`mongodb connected`);
+// }).catch((err)=>{
+//     console.log(err);
     
+// })
+
+let isConnected=false;
+async function connectToMongoDB()  {
+    try{
+        await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser:true,
+            useUnifiedTopology:true,
+        });
+        isConnected=true;
+        console.log("Connected to MongoDB");
+    }catch(err){
+        console.error("Error connecting to MongoDB", err);
+        
+    }
+}
+ 
+//add middleware to check connection
+app.use((req, res, next)=>{
+    if(!isConnected){
+        connectToMongoDB
+    }
+    next();
 })
 
 app.use("/api/v1", auth);
@@ -40,10 +63,12 @@ app.use("/api/v2", list);
 
 
 // For local development
-app.get("/api/test", (req, res) => {
-    res.send("API is working!");
-});
+// app.get("/api/test", (req, res) => {
+//     res.send("API is working!");
+// });
 
-app.listen(port, () => {
-    console.log(`server is running on ${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`server is running on ${port}`);
+// });
+
+module.exports = app;
