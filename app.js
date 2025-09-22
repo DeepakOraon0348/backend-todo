@@ -76,4 +76,4 @@ app.use("/api/v2", list);
 //     console.log(`server is running on ${port}`);
 // });
 
-module.exports = app;
+export default app;
