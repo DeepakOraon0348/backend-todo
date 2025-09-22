@@ -1,79 +1,52 @@
-import express, { Router } from "express";
+import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-dotenv.config();
+import serverless from "serverless-http";
+
 import auth from "./routs/auth.js";
 import list from "./routs/list.js";
-import path from "path";
-import { fileURLToPath } from "url";
-import { METHODS } from "http";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+dotenv.config();
 
-const port = process.env.PORT || 3000;
-const app=express();
+const app = express();
 
-
-const corsConfig = {
-    origin: "*",
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-};
-app.use(cors({origin: "*", credentials: true}));
+// ---------- Middleware ----------
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json());
 
-
-// mongoose.connect(process.env.MONGO_URI)
-// .then(()=>{
-//     console.log(`mongodb connected`);
-// }).catch((err)=>{
-//     console.log(err);
-    
-// })
-
-let isConnected=false;
-async function connectToMongoDB()  {
-    try{
-        await mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser:true,
-            useUnifiedTopology:true,
-        });
-        isConnected=true;
-        console.log("Connected to MongoDB");
-    }catch(err){
-        console.error("Error connecting to MongoDB", err);
-        
-    }
+// ---------- MongoDB connection ----------
+let isConnected = false;
+async function connectToMongoDB() {
+  if (!isConnected) {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log("✅ MongoDB connected");
+  }
 }
- 
-//add middleware to check connection
-app.use(async (req, res, next)=>{
-    if(!isConnected){
-        await connectToMongoDB();
-    }
-    next();
-})
 
+// Ensure MongoDB is ready for each request
+app.use(async (req, res, next) => {
+  if (!isConnected) await connectToMongoDB();
+  next();
+});
 
-app.get("/", (req, res)=>{
-    res.send("API is working!");
-})
+// ---------- Routes ----------
+app.get("/", (req, res) => {
+  res.send("API is working!");
+});
 
 app.use("/api/v1", auth);
 app.use("/api/v2", list);
 
-// Remove static file serving for Vercel
+// ---------- Export for Vercel ----------
+export const handler = serverless(app);
 
-
-// For local development
-// app.get("/api/test", (req, res) => {
-//     res.send("API is working!");
-// });
-
-// app.listen(port, () => {
-//     console.log(`server is running on ${port}`);
-// });
-
-export default app;
+// ---------- For local dev ----------
+if (process.env.NODE_ENV !== "production") {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => console.log(`🚀 Server running on http://localhost:${port}`));
+}
